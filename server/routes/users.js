@@ -5,6 +5,16 @@ import { verifyToken, isAdmin } from "../middleware/auth.js";
 
 const router = express.Router();
 
+router.get("/developers", verifyToken, async (req, res) => {
+  try {
+    const developers = await User.find({ role: "Developer" }).select("-password");
+    res.json(developers);
+  } catch (err) {
+    console.error("Error fetching developers:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // View all users (admin)
 router.get("/", verifyToken, isAdmin, async (req, res) => {
   const users = await User.find();
