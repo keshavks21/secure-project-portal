@@ -26,17 +26,30 @@ const ActiveProjects = () => {
   }, []);
 
   const handleMarkComplete = async (projectId) => {
-    try {  
-      await axios.post(BASE_URL+`/api/projects/${projectId}/complete`, {}, {
+    try {
+      await axios.post(`${BASE_URL}/api/projects/${projectId}/complete`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      console.log("HI");
-      // Refresh list after marking as complete
       fetchProjects();
     } catch (err) {
       console.error('Error marking project complete:', err);
+    }
+  };
+
+  const handleDeleteProject = async (projectId) => {
+    if (!window.confirm("Are you sure you want to delete this project?")) return;
+
+    try {
+      await axios.delete(`${BASE_URL}/api/projects/delete/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      fetchProjects();
+    } catch (err) {
+      console.error('Error deleting project:', err);
     }
   };
 
@@ -51,7 +64,9 @@ const ActiveProjects = () => {
             <li key={project._id} className="border p-4 rounded shadow bg-white">
               <h3 className="text-lg font-semibold">{project.name}</h3>
               <p>{project.description}</p>
-              <p className="text-sm text-gray-600">Deadline: {new Date(project.deadline).toLocaleDateString()}</p>
+              <p className="text-sm text-gray-600">
+                Deadline: {new Date(project.deadline).toLocaleDateString()}
+              </p>
 
               <Link
                 to={`/projects/${project._id}`}
@@ -61,12 +76,21 @@ const ActiveProjects = () => {
               </Link>
 
               {user?.role === 'Admin' && (
-                <button
-                  onClick={() => handleMarkComplete(project._id)}
-                  className="mt-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-                >
-                  ✅ Mark as Complete
-                </button>
+                <div className="flex gap-3 mt-3">
+                  <button
+                    onClick={() => handleMarkComplete(project._id)}
+                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                  >
+                    ✅ Mark as Complete
+                  </button>
+
+                  <button
+                    onClick={() => handleDeleteProject(project._id)}
+                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                  >
+                    🗑️ Remove Project
+                  </button>
+                </div>
               )}
             </li>
           ))}

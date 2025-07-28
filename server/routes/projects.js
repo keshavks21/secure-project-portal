@@ -8,8 +8,6 @@ const router = express.Router();
 
 // Admin: Add new project
 router.post("/add", verifyToken, isAdmin, async (req, res) => {
-  console.log("HI");
-  
   const { name, description, deadline } = req.body;
   const project = new Project({ name, description, deadline });
   await project.save();
@@ -20,6 +18,20 @@ router.post("/add", verifyToken, isAdmin, async (req, res) => {
 router.post("/:id/complete", verifyToken, isAdmin, async (req, res) => {
   const project = await Project.findByIdAndUpdate(req.params.id, { completed: true }, { new: true });
   res.json(project);
+});
+
+//Delete project
+router.delete("/delete/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const project = await Project.findByIdAndDelete(req.params.id);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    res.json({ message: "Project deleted successfully", project });
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 // routes/projectRoutes.js
@@ -114,4 +126,5 @@ router.post("/documents/upload", verifyToken, upload.single("document"), async (
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 export default router;

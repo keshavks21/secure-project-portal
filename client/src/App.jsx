@@ -12,7 +12,7 @@ import NewProject from './pages/NewProject.jsx';
 import AssignDeveloper from './pages/AssignDeveloper.jsx';
 import CompleteProject from './pages/CompleteProject.jsx';
 import ActiveProjects from './pages/ActiveProjects.jsx';
-import UploadDocuments from './pages/UploadDocument.jsx'; // ✅ Import this
+import UploadDocuments from './pages/UploadDocument.jsx'; 
 import MyProjects from './pages/MyProjects.jsx'; 
 
 const ProtectedRoute = ({ element }) => {
@@ -38,6 +38,7 @@ const AppRoutes = () => {
         <Route path="/projects/:id" element={<ProtectedRoute element={<ProjectDetails />} />} />
         <Route path="/settings" element={<ProtectedRoute element={<AccountSettings />} />} />
         <Route path="/myprojects" element={<MyProjects />} />
+        <Route path="/update/password" element={<AccountSettings />} />
 
         {/* ✅ Developer/Lead Routes */}
         <Route path="/documents/upload" element={

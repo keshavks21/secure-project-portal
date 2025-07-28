@@ -11,12 +11,14 @@ router.post("/register", async (req, res, next) => {
   try {
     const userCount = await User.countDocuments();
 
+    // ✅ For all users except first, require token + admin check
     if (userCount > 0) {
-      // For existing users, require Admin token
-      return verifyToken(req, res, () => isAdmin(req, res, next));
+      return verifyToken(req, res, function () {
+        return isAdmin(req, res, next);
+      });
     }
 
-    // First user: allow without token (public registration)
+    // ✅ If it's the first user, allow public registration
     next();
   } catch (err) {
     return res.status(500).json({ error: "Server error in registration gate" });
@@ -25,9 +27,11 @@ router.post("/register", async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
 
-    // Optional: prevent non-admin roles from being created in first run
-    if (!role && (await User.countDocuments()) === 0) {
-      return res.status(400).json({ message: "Role required for first user" });
+    const userCount = await User.countDocuments();
+
+    // ✅ First user must be Admin
+    if (userCount === 0 && role !== 'Admin') {
+      return res.status(400).json({ message: "First user must be an Admin" });
     }
 
     const existing = await User.findOne({ email });

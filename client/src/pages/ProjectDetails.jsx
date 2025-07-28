@@ -14,9 +14,7 @@ const ProjectDetails = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-        });
-        console.log(res);
-        
+        });        
         setProject(res.data);
       } catch (err) {
         console.error('Error fetching project:', err);

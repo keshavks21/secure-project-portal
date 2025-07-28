@@ -62,11 +62,7 @@ const Dashboard = () => {
                     📤 Upload Documents
                   </Link>
                 </li>
-                <li>
-                  <Link to="/projects" className="text-purple-600 hover:underline">
-                    📁 View All Projects
-                  </Link>
-                </li>
+                
               </ul>
             </div>
           </div>
@@ -74,24 +70,25 @@ const Dashboard = () => {
 
         {/* Developer Dashboard */}
         {user?.role === 'Developer' && (
-          <div className="grid gap-6">
-            <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
-              <h2 className="text-xl font-semibold mb-4 text-green-700">💻 Developer Dashboard</h2>
-              <ul className="space-y-3">
-                <li>
-                  <Link to="/my-projects" className="text-green-600 hover:underline">
-                    📋 View My Projects
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/projects" className="text-green-600 hover:underline">
-                    📁 View All Projects
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        )}
+  <div className="grid gap-6">
+    <div className="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition">
+      <h2 className="text-xl font-semibold mb-4 text-green-700">💻 Developer Dashboard</h2>
+      <ul className="space-y-3">
+        <li>
+          <Link to="/myprojects" className="text-green-600 hover:underline">
+            📋 View My Projects
+          </Link>
+        </li>
+        <li>
+          <Link to="/update/password" className="text-green-600 hover:underline">
+            🔒 Update Password
+          </Link>
+        </li>
+      </ul>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );
