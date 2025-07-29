@@ -14,6 +14,7 @@ import CompleteProject from './pages/CompleteProject.jsx';
 import ActiveProjects from './pages/ActiveProjects.jsx';
 import UploadDocuments from './pages/UploadDocument.jsx'; 
 import MyProjects from './pages/MyProjects.jsx'; 
+import ChangeRole from './pages/ChangeRole.jsx';
 
 const ProtectedRoute = ({ element }) => {
   const { user } = useAuth();
@@ -45,6 +46,10 @@ const AppRoutes = () => {
           (user?.role === 'Developer' || user?.role === 'ProjectLead') 
             ? <UploadDocuments /> 
             : <Navigate to="/" />
+        } />
+
+        <Route path="/admin/change/role" element={
+          user?.role === 'Admin' ? <ChangeRole /> : <Navigate to="/" />
         } />
 
         {/* ✅ Lead Routes */}
